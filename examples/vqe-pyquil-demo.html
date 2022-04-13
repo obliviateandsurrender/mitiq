@@ -8,7 +8,7 @@ in the top right corner -->
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Variational Quantum Eigensolver improved with Zero Noise Extrapolation &#8212; Mitiq 0.14.0 documentation</title>
+    <title>Variational Quantum Eigensolver improved with Zero Noise Extrapolation &#8212; Mitiq 0.15.0dev documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -412,7 +412,7 @@ where the pyQuil program will run</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyquil.quil.Program at 0x7f4468b17160&gt;
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>&lt;pyquil.quil.Program at 0x7f192bbc6220&gt;
 </pre></div>
 </div>
 </div>
@@ -534,15 +534,15 @@ ZNE.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> final_simplex: (array([[2.83066406],
-       [2.83125   ]]), array([-0.43133333, -0.42866667]))
-           fun: -0.43133333333333335
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> final_simplex: (array([[2.9953125 ],
+       [2.99527588]]), array([-0.43266667, -0.42466667]))
+           fun: -0.4326666666666667
        message: &#39;Optimization terminated successfully.&#39;
-          nfev: 31
-           nit: 12
+          nfev: 32
+           nit: 13
         status: 0
        success: True
-             x: array([2.83066406])
+             x: array([2.9953125])
 </pre></div>
 </div>
 </div>
@@ -640,15 +640,15 @@ the optimization loop to have better convergence with ZNE applied.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> final_simplex: (array([[3.225],
-       [3.225]]), array([-0.806     , -0.79633333]))
-           fun: -0.8060000000000002
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span> final_simplex: (array([[3.15043945],
+       [3.15058594]]), array([-0.816, -0.809]))
+           fun: -0.8160000000000001
        message: &#39;Optimization terminated successfully.&#39;
-          nfev: 98
-           nit: 36
+          nfev: 30
+           nit: 12
         status: 0
        success: True
-             x: array([3.225])
+             x: array([3.15043945])
 </pre></div>
 </div>
 </div>
@@ -686,18 +686,18 @@ execution time.</p>
 ==============================================================================
 Authored by: Mitiq team, 2020 &amp; later (https://github.com/unitaryfund/mitiq)
 
-Mitiq Version:	0.14.0
+Mitiq Version:	0.15.0dev
 
 Core Dependencies
 -----------------
-Cirq Version:	0.14.0
+Cirq Version:	0.14.1
 NumPy Version:	1.20.3
 SciPy Version:	1.7.3
 
 Optional Dependencies
 ---------------------
 PyQuil Version:	3.0.1
-Qiskit Version:	0.35.0
+Qiskit Version:	0.36.0
 Braket Version:	1.17.0
 
 Python Version:	3.8.12

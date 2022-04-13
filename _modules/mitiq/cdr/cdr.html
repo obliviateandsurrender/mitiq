@@ -8,7 +8,7 @@ in the top right corner -->
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>mitiq.cdr.cdr &#8212; Mitiq 0.14.0 documentation</title>
+    <title>mitiq.cdr.cdr &#8212; Mitiq 0.15.0dev documentation</title>
     
   <!-- Loaded before other Sphinx assets -->
   <link href="../../../_static/styles/theme.css?digest=1999514e3f237ded88cf" rel="stylesheet">
@@ -197,7 +197,7 @@ in the top right corner -->
 <span class="sd">&quot;&quot;&quot;API for using Clifford Data Regression (CDR) error mitigation.&quot;&quot;&quot;</span>
 
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span><span class="p">,</span> <span class="n">Sequence</span><span class="p">,</span> <span class="n">Union</span>
-
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
 
@@ -246,7 +246,7 @@ in the top right corner -->
 <span class="sd">    Args:</span>
 <span class="sd">        circuit: Quantum program to execute with error mitigation.</span>
 <span class="sd">        executor: Executes a circuit and returns a `QuantumResult`.</span>
-<span class="sd">            observable: Observable to compute the expectation value of.</span>
+<span class="sd">        observable: Observable to compute the expectation value of.</span>
 <span class="sd">            If None, the `executor` must return an expectation value. Otherwise</span>
 <span class="sd">            the `QuantumResult` returned by `executor` is used to compute the</span>
 <span class="sd">            expectation of the observable.</span>
@@ -347,6 +347,168 @@ in the top right corner -->
         <span class="n">p0</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="n">num_fit_parameters</span><span class="p">),</span>
     <span class="p">)</span>
     <span class="k">return</span> <span class="n">fit_function</span><span class="p">(</span><span class="n">noisy_results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="p">:],</span> <span class="n">fitted_params</span><span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="mitigate_executor"><a class="viewcode-back" href="../../../apidoc.html#mitiq.cdr.cdr.mitigate_executor">[docs]</a><span class="k">def</span> <span class="nf">mitigate_executor</span><span class="p">(</span>
+    <span class="n">executor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">],</span> <span class="n">QuantumResult</span><span class="p">],</span>
+    <span class="n">observable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Observable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">simulator</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Executor</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">],</span> <span class="n">QuantumResult</span><span class="p">]],</span>
+    <span class="n">num_training_circuits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">fraction_non_clifford</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">fit_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">linear_fit_function</span><span class="p">,</span>
+    <span class="n">num_fit_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale_factors</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+    <span class="n">scale_noise</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">QPROGRAM</span><span class="p">]</span> <span class="o">=</span> <span class="n">fold_gates_at_random</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Returns a clifford data regression (CDR) mitigated version of</span>
+<span class="sd">    the input &#39;executor&#39;.</span>
+
+<span class="sd">    The input `executor` executes a circuit with an arbitrary backend and</span>
+<span class="sd">    produces an expectation value (without any error mitigation). The returned</span>
+<span class="sd">    executor executes the circuit with the same backend but uses clifford</span>
+<span class="sd">    data regression to produce the CDR estimate of the ideal expectation</span>
+<span class="sd">    value associated to the input circuit.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        executor: Executes a circuit and returns a `QuantumResult`.</span>
+<span class="sd">        observable: Observable to compute the expectation value of.</span>
+<span class="sd">            If None, the `executor` must return an expectation value. Otherwise</span>
+<span class="sd">            the `QuantumResult` returned by `executor` is used to compute the</span>
+<span class="sd">            expectation of the observable.</span>
+<span class="sd">        simulator: Executes a circuit without noise and returns a</span>
+<span class="sd">            `QuantumResult`. For CDR to be efficient, the simulator must</span>
+<span class="sd">            be able to efficiently simulate near-Clifford circuits.</span>
+<span class="sd">        num_training_circuits: Number of training circuits to be used in the</span>
+<span class="sd">            mitigation.</span>
+<span class="sd">        fraction_non_clifford: The fraction of non-Clifford gates to be</span>
+<span class="sd">            substituted in the training circuits.</span>
+<span class="sd">        fit_function: The function to map noisy to exact data. Takes array of</span>
+<span class="sd">            noisy and data and parameters returning a float. See</span>
+<span class="sd">            ``cdr.linear_fit_function`` for an example.</span>
+<span class="sd">        num_fit_parameters: The number of parameters the fit_function takes.</span>
+<span class="sd">        scale_noise: scale_noise: Function for scaling the noise of a quantum</span>
+<span class="sd">            circuit.</span>
+<span class="sd">        scale_factors: Factors by which to scale the noise.</span>
+<span class="sd">            - When 1.0 is the only scale factor, the method is known as CDR.</span>
+<span class="sd">            - Note: When scale factors larger than 1.0 are provided, the method</span>
+<span class="sd">            is known as &quot;variable-noise CDR.&quot;</span>
+<span class="sd">        kwargs: Available keyword arguments are:</span>
+<span class="sd">            - method_select (string): Specifies the method used to select the</span>
+<span class="sd">            non-Clifford gates to replace when constructing the</span>
+<span class="sd">            near-Clifford training circuits. Can be &#39;uniform&#39; or</span>
+<span class="sd">            &#39;gaussian&#39;.</span>
+<span class="sd">            - method_replace (string): Specifies the method used to replace</span>
+<span class="sd">            the selected non-Clifford gates with a Clifford when</span>
+<span class="sd">            constructing the near-Clifford training circuits. Can be</span>
+<span class="sd">            &#39;uniform&#39;, &#39;gaussian&#39;, or &#39;closest&#39;.</span>
+<span class="sd">            - sigma_select (float): Width of the Gaussian distribution used for</span>
+<span class="sd">            ``method_select=&#39;gaussian&#39;``.</span>
+<span class="sd">            - sigma_replace (float): Width of the Gaussian distribution used</span>
+<span class="sd">            for ``method_replace=&#39;gaussian&#39;``.</span>
+<span class="sd">            - random_state (int): Seed for sampling.&quot;&quot;&quot;</span>
+
+    <span class="nd">@wraps</span><span class="p">(</span><span class="n">executor</span><span class="p">)</span>
+    <span class="k">def</span> <span class="nf">new_executor</span><span class="p">(</span>
+        <span class="n">circuit</span><span class="p">:</span> <span class="n">QPROGRAM</span><span class="p">,</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">execute_with_cdr</span><span class="p">(</span>
+            <span class="n">circuit</span><span class="p">,</span>
+            <span class="n">executor</span><span class="p">,</span>
+            <span class="n">observable</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">=</span><span class="n">simulator</span><span class="p">,</span>
+            <span class="n">num_training_circuits</span><span class="o">=</span><span class="n">num_training_circuits</span><span class="p">,</span>
+            <span class="n">fraction_non_clifford</span><span class="o">=</span><span class="n">fraction_non_clifford</span><span class="p">,</span>
+            <span class="n">fit_function</span><span class="o">=</span><span class="n">fit_function</span><span class="p">,</span>
+            <span class="n">num_fit_parameters</span><span class="o">=</span><span class="n">num_fit_parameters</span><span class="p">,</span>
+            <span class="n">scale_factors</span><span class="o">=</span><span class="n">scale_factors</span><span class="p">,</span>
+            <span class="n">scale_noise</span><span class="o">=</span><span class="n">scale_noise</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">new_executor</span></div>
+
+
+<div class="viewcode-block" id="cdr_decorator"><a class="viewcode-back" href="../../../apidoc.html#mitiq.cdr.cdr.cdr_decorator">[docs]</a><span class="k">def</span> <span class="nf">cdr_decorator</span><span class="p">(</span>
+    <span class="n">observable</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">Observable</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="o">*</span><span class="p">,</span>
+    <span class="n">simulator</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="n">Executor</span><span class="p">,</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">],</span> <span class="n">QuantumResult</span><span class="p">]],</span>
+    <span class="n">num_training_circuits</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">10</span><span class="p">,</span>
+    <span class="n">fraction_non_clifford</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">,</span>
+    <span class="n">fit_function</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[</span><span class="o">...</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="n">linear_fit_function</span><span class="p">,</span>
+    <span class="n">num_fit_parameters</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">int</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scale_factors</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,),</span>
+    <span class="n">scale_noise</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">,</span> <span class="nb">float</span><span class="p">],</span> <span class="n">QPROGRAM</span><span class="p">]</span> <span class="o">=</span> <span class="n">fold_gates_at_random</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[</span>
+    <span class="p">[</span><span class="n">Callable</span><span class="p">[[</span><span class="n">Union</span><span class="p">[</span><span class="n">QPROGRAM</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span> <span class="n">QuantumResult</span><span class="p">]],</span>
+    <span class="n">Callable</span><span class="p">[</span>
+        <span class="p">[</span><span class="n">Union</span><span class="p">[</span><span class="n">QPROGRAM</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">,</span> <span class="n">Any</span><span class="p">]],</span>
+        <span class="nb">float</span><span class="p">,</span>
+    <span class="p">],</span>
+<span class="p">]:</span>
+    <span class="sd">&quot;&quot;&quot;Decorator which adds clifford data regression (CDR) mitigation</span>
+<span class="sd">    to an executor function, i.e., a function which executes a quantum circuit</span>
+<span class="sd">    with an arbitrary backend and returns the CDR estimate of the ideal</span>
+<span class="sd">    expectation value associated to the input circuit.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        executor: Executes a circuit and returns a `QuantumResult`.</span>
+<span class="sd">        observable: Observable to compute the expectation value of.</span>
+<span class="sd">            If None, the `executor` must return an expectation value. Otherwise</span>
+<span class="sd">            the `QuantumResult` returned by `executor` is used to compute the</span>
+<span class="sd">            expectation of the observable.</span>
+<span class="sd">        simulator: Executes a circuit without noise and returns a</span>
+<span class="sd">            `QuantumResult`. For CDR to be efficient, the simulator must</span>
+<span class="sd">            be able to efficiently simulate near-Clifford circuits.</span>
+<span class="sd">        num_training_circuits: Number of training circuits to be used in the</span>
+<span class="sd">            mitigation.</span>
+<span class="sd">        fraction_non_clifford: The fraction of non-Clifford gates to be</span>
+<span class="sd">            substituted in the training circuits.</span>
+<span class="sd">        fit_function: The function to map noisy to exact data. Takes array of</span>
+<span class="sd">            noisy and data and parameters returning a float. See</span>
+<span class="sd">            ``cdr.linear_fit_function`` for an example.</span>
+<span class="sd">        num_fit_parameters: The number of parameters the fit_function takes.</span>
+<span class="sd">        scale_noise: scale_noise: Function for scaling the noise of a quantum</span>
+<span class="sd">            circuit.</span>
+<span class="sd">        scale_factors: Factors by which to scale the noise.</span>
+<span class="sd">            - When 1.0 is the only scale factor, the method is known as CDR.</span>
+<span class="sd">            - Note: When scale factors larger than 1.0 are provided, the method</span>
+<span class="sd">            is known as &quot;variable-noise CDR.&quot;</span>
+<span class="sd">        kwargs: Available keyword arguments are:</span>
+<span class="sd">            - method_select (string): Specifies the method used to select the</span>
+<span class="sd">            non-Clifford gates to replace when constructing the</span>
+<span class="sd">            near-Clifford training circuits. Can be &#39;uniform&#39; or</span>
+<span class="sd">            &#39;gaussian&#39;.</span>
+<span class="sd">            - method_replace (string): Specifies the method used to replace</span>
+<span class="sd">            the selected non-Clifford gates with a Clifford when</span>
+<span class="sd">            constructing the near-Clifford training circuits. Can be</span>
+<span class="sd">            &#39;uniform&#39;, &#39;gaussian&#39;, or &#39;closest&#39;.</span>
+<span class="sd">            - sigma_select (float): Width of the Gaussian distribution used for</span>
+<span class="sd">            ``method_select=&#39;gaussian&#39;``.</span>
+<span class="sd">            - sigma_replace (float): Width of the Gaussian distribution used</span>
+<span class="sd">            for ``method_replace=&#39;gaussian&#39;``.</span>
+<span class="sd">            - random_state (int): Seed for sampling.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="nf">decorator</span><span class="p">(</span>
+        <span class="n">executor</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">],</span> <span class="n">QuantumResult</span><span class="p">]</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Callable</span><span class="p">[[</span><span class="n">QPROGRAM</span><span class="p">],</span> <span class="nb">float</span><span class="p">]:</span>
+        <span class="k">return</span> <span class="n">mitigate_executor</span><span class="p">(</span>
+            <span class="n">executor</span><span class="p">,</span>
+            <span class="n">observable</span><span class="p">,</span>
+            <span class="n">simulator</span><span class="o">=</span><span class="n">simulator</span><span class="p">,</span>
+            <span class="n">num_training_circuits</span><span class="o">=</span><span class="n">num_training_circuits</span><span class="p">,</span>
+            <span class="n">fraction_non_clifford</span><span class="o">=</span><span class="n">fraction_non_clifford</span><span class="p">,</span>
+            <span class="n">fit_function</span><span class="o">=</span><span class="n">fit_function</span><span class="p">,</span>
+            <span class="n">num_fit_parameters</span><span class="o">=</span><span class="n">num_fit_parameters</span><span class="p">,</span>
+            <span class="n">scale_factors</span><span class="o">=</span><span class="n">scale_factors</span><span class="p">,</span>
+            <span class="n">scale_noise</span><span class="o">=</span><span class="n">scale_noise</span><span class="p">,</span>
+            <span class="o">**</span><span class="n">kwargs</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">decorator</span></div>
 </pre></div>
 
               </div>
