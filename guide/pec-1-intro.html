@@ -424,9 +424,9 @@ identity operation.</p>
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ┌─────────┐┌───────┐┌───┐┌────┐┌──────┐┌─────────┐
-q: ┤ Ry(π/2) ├┤ Rx(0) ├┤ Y ├┤ √X ├┤ √Xdg ├┤ Ry(π/2) ├
-   └─────────┘└───────┘└───┘└────┘└──────┘└─────────┘
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>   ┌───┐┌───────┐┌─────────┐┌──────┐┌────┐┌─────────┐
+q: ┤ Y ├┤ Rx(0) ├┤ Ry(π/2) ├┤ √Xdg ├┤ √X ├┤ Ry(π/2) ├
+   └───┘└───────┘└─────────┘└──────┘└────┘└─────────┘
 </pre></div>
 </div>
 </div>
@@ -483,7 +483,7 @@ of noisy implementable operations. Such linear combinations are also known as qu
 <p>But how can we obtain the quasi-probability representations that are appropriate for a given backend?
 There are two main alternative scenarios.</p>
 <ul class="simple">
-<li><p><strong>Case 1:</strong> The noise of the backend can be approximated by a simple noise model, such that quasi-probability representations can be analytically computed <span id="id1">[<a class="reference internal" href="../zz_bibliography.html#id32" title="Kristan Temme, Sergey Bravyi, and Jay M. Gambetta. Error mitigation for short-depth quantum circuits. Physical Review Letters, (2017). URL: https://doi.org/10.1103/PhysRevLett.119.180509, doi:10.1103/physrevlett.119.180509.">4</a>, <a class="reference internal" href="../zz_bibliography.html#id30" title="Jinzhao Sun, Xiao Yuan, Takahiro Tsunoda, Vlatko Vedral, Simon C. Benjamin, and Suguru Endo. Mitigating realistic noise in practical noisy intermediate-scale quantum devices. Phys. Rev. Applied, 15:034026, (2021). URL: https://link.aps.org/doi/10.1103/PhysRevApplied.15.034026, doi:10.1103/PhysRevApplied.15.034026.">7</a>, <a class="reference internal" href="../zz_bibliography.html#id31" title="Ryuji Takagi. Optimal resource cost for error mitigation. Physical Review Research, (2021). URL: http://dx.doi.org/10.1103/PhysRevResearch.3.033178, doi:10.1103/physrevresearch.3.033178.">8</a>]</span>. For example, this is possible for depolarizing or amplitude damping noise.</p></li>
+<li><p><strong>Case 1:</strong> The noise of the backend can be approximated by a simple noise model, such that quasi-probability representations can be analytically computed <span id="id1">[<a class="reference internal" href="../zz_bibliography.html#id33" title="Kristan Temme, Sergey Bravyi, and Jay M. Gambetta. Error mitigation for short-depth quantum circuits. Physical Review Letters, (2017). URL: https://doi.org/10.1103/PhysRevLett.119.180509, doi:10.1103/physrevlett.119.180509.">4</a>, <a class="reference internal" href="../zz_bibliography.html#id31" title="Jinzhao Sun, Xiao Yuan, Takahiro Tsunoda, Vlatko Vedral, Simon C. Benjamin, and Suguru Endo. Mitigating realistic noise in practical noisy intermediate-scale quantum devices. Phys. Rev. Applied, 15:034026, (2021). URL: https://link.aps.org/doi/10.1103/PhysRevApplied.15.034026, doi:10.1103/PhysRevApplied.15.034026.">7</a>, <a class="reference internal" href="../zz_bibliography.html#id32" title="Ryuji Takagi. Optimal resource cost for error mitigation. Physical Review Research, (2021). URL: http://dx.doi.org/10.1103/PhysRevResearch.3.033178, doi:10.1103/physrevresearch.3.033178.">8</a>]</span>. For example, this is possible for depolarizing or amplitude damping noise.</p></li>
 <li><p><strong>Case 2:</strong> The noise of the backend is too complex and cannot be approximated by a simple noise model.</p></li>
 </ul>
 <p>Depending on the previous two cases, the method to obtain quasi-probability representations is different.</p>
@@ -492,12 +492,12 @@ There are two main alternative scenarios.</p>
 parameter (or a few parameters) that can be experimentally estimated. Possible techniques for estimating the noise level are randomized-benchmarking
 experiments or calibration experiments. Often, gate error probabilities are reported by hardware vendors and can be used to obtain a good guess
 for the <code class="docutils literal notranslate"><span class="pre">noise_level</span></code> without running any experiments. Given the noise model and the <code class="docutils literal notranslate"><span class="pre">noise_level</span></code>, one can apply known analytical expressions to
-compute the quasi-probability representations of arbitrary gates <span id="id2">[<a class="reference internal" href="../zz_bibliography.html#id32" title="Kristan Temme, Sergey Bravyi, and Jay M. Gambetta. Error mitigation for short-depth quantum circuits. Physical Review Letters, (2017). URL: https://doi.org/10.1103/PhysRevLett.119.180509, doi:10.1103/physrevlett.119.180509.">4</a>, <a class="reference internal" href="../zz_bibliography.html#id31" title="Ryuji Takagi. Optimal resource cost for error mitigation. Physical Review Research, (2021). URL: http://dx.doi.org/10.1103/PhysRevResearch.3.033178, doi:10.1103/physrevresearch.3.033178.">8</a>]</span>.</p></li>
+compute the quasi-probability representations of arbitrary gates <span id="id2">[<a class="reference internal" href="../zz_bibliography.html#id33" title="Kristan Temme, Sergey Bravyi, and Jay M. Gambetta. Error mitigation for short-depth quantum circuits. Physical Review Letters, (2017). URL: https://doi.org/10.1103/PhysRevLett.119.180509, doi:10.1103/physrevlett.119.180509.">4</a>, <a class="reference internal" href="../zz_bibliography.html#id32" title="Ryuji Takagi. Optimal resource cost for error mitigation. Physical Review Research, (2021). URL: http://dx.doi.org/10.1103/PhysRevResearch.3.033178, doi:10.1103/physrevresearch.3.033178.">8</a>]</span>.</p></li>
 <li><p><strong>Method for case 2:</strong> Assuming an over-simplified noise model may be a bad approximation. In this case, the suggested approach is to
 perform the complete process tomography of a basis set of implementable noisy operations (e.g. the native gate set of the backend).
 One could also use <em>gate set tomography</em> (GST), a noise characterization technique which is robust to state-preparation and measurement errors.
 Given the superoperators of the noisy implementable operations, one can obtain the quasi-probability representations as solutions of
-numerical optimization problems <span id="id3">[<a class="reference internal" href="../zz_bibliography.html#id32" title="Kristan Temme, Sergey Bravyi, and Jay M. Gambetta. Error mitigation for short-depth quantum circuits. Physical Review Letters, (2017). URL: https://doi.org/10.1103/PhysRevLett.119.180509, doi:10.1103/physrevlett.119.180509.">4</a>, <a class="reference internal" href="../zz_bibliography.html#id30" title="Jinzhao Sun, Xiao Yuan, Takahiro Tsunoda, Vlatko Vedral, Simon C. Benjamin, and Suguru Endo. Mitigating realistic noise in practical noisy intermediate-scale quantum devices. Phys. Rev. Applied, 15:034026, (2021). URL: https://link.aps.org/doi/10.1103/PhysRevApplied.15.034026, doi:10.1103/PhysRevApplied.15.034026.">7</a>]</span>. In Mitiq, this is possible through the
+numerical optimization problems <span id="id3">[<a class="reference internal" href="../zz_bibliography.html#id33" title="Kristan Temme, Sergey Bravyi, and Jay M. Gambetta. Error mitigation for short-depth quantum circuits. Physical Review Letters, (2017). URL: https://doi.org/10.1103/PhysRevLett.119.180509, doi:10.1103/physrevlett.119.180509.">4</a>, <a class="reference internal" href="../zz_bibliography.html#id31" title="Jinzhao Sun, Xiao Yuan, Takahiro Tsunoda, Vlatko Vedral, Simon C. Benjamin, and Suguru Endo. Mitigating realistic noise in practical noisy intermediate-scale quantum devices. Phys. Rev. Applied, 15:034026, (2021). URL: https://link.aps.org/doi/10.1103/PhysRevApplied.15.034026, doi:10.1103/PhysRevApplied.15.034026.">7</a>]</span>. In Mitiq, this is possible through the
 <a class="reference internal" href="../apidoc.html#mitiq.pec.representations.optimal.find_optimal_representation" title="mitiq.pec.representations.optimal.find_optimal_representation"><code class="xref py py-func docutils literal notranslate"><span class="pre">find_optimal_representation()</span></code></a> function as shown the section <a class="reference internal" href="pec-3-options.html"><span class="doc std std-doc">What additional options are available in PEC?</span></a>.</p></li>
 </ul>
 <p>In this example, the <code class="docutils literal notranslate"><span class="pre">execute</span></code> function simulates the effect of depolarizing noise of some fixed <code class="docutils literal notranslate"><span class="pre">noise_level</span></code> acting after each gate. Therefore, we are in the first scenario defined above and we can generate a list of   <a class="reference internal" href="../apidoc.html#mitiq.pec.types.types.OperationRepresentation" title="mitiq.pec.types.types.OperationRepresentation"><code class="xref py py-class docutils literal notranslate"><span class="pre">OperationRepresentation</span></code></a> objects associated to all the gates of the <code class="docutils literal notranslate"><span class="pre">circuit</span></code> as follows:</p>
@@ -525,7 +525,7 @@ numerical optimization problems <span id="id3">[<a class="reference internal" hr
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>q_0: ───X^-0.5─── = 1.010*(q_0: ───X^-0.5───)-0.003*(q_0: ───X^-0.5───X───)-0.003*(q_0: ───X^-0.5───Y───)-0.003*(q_0: ───X^-0.5───Z───)
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>q_0: ───Rx(0)─── = 1.010*(q_0: ───Rx(0)───)-0.003*(q_0: ───Rx(0)───X───)-0.003*(q_0: ───Rx(0)───Y───)-0.003*(q_0: ───Rx(0)───Z───)
 </pre></div>
 </div>
 </div>
@@ -551,7 +551,7 @@ probabilistic error cancellation can be applied through the <a class="reference 
 </div>
 <div class="cell_output docutils container">
 <div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>Error without PEC: 0.03869
-Error with PEC:    0.00482
+Error with PEC:    0.00332
 </pre></div>
 </div>
 </div>
