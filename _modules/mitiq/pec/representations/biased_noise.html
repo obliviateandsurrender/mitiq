@@ -227,12 +227,16 @@ in the top right corner -->
 <span class="sd">    where :math:`\mathcal{U}` is the unitary associated</span>
 <span class="sd">    to the input ``ideal_operation``,</span>
 <span class="sd">    :math:`\mathcal{P}_\alpha` is a Pauli operation and</span>
-<span class="sd">    ..math::`\mathcal{D}(\epsilon) = (1 - \epsilon)[mathbb{1}] +</span>
-<span class="sd">    \epsilon(frac{\eta}{\eta + 1} mathcal{Z}</span>
-<span class="sd">    + frac{1}{3}frac{1}{\eta + 1}(mathcal{X} + mathcal{Y} + mathcal{Z}))` is</span>
-<span class="sd">    the combined (biased) dephasing and depolarizing channel acting on a single</span>
-<span class="sd">    qubit. For multi-qubit operations, we use a noise channel that is the</span>
-<span class="sd">    tensor product of the local single-qubit channels.</span>
+
+<span class="sd">    ..math::</span>
+<span class="sd">        `\mathcal{D}(\epsilon) = (1 - \epsilon)[\mathbb{1}] +</span>
+<span class="sd">        \epsilon(\frac{\eta}{\eta + 1} \mathcal{Z}</span>
+<span class="sd">        + \frac{1}{3}\frac{1}{\eta + 1}(\mathcal{X} + \mathcal{Y}</span>
+<span class="sd">        + \mathcal{Z}))`</span>
+
+<span class="sd">    is the combined (biased) dephasing and depolarizing channel acting on a</span>
+<span class="sd">    single qubit. For multi-qubit operations, we use a noise channel that is</span>
+<span class="sd">    the tensor product of the local single-qubit channels.</span>
 
 <span class="sd">    Args:</span>
 <span class="sd">        ideal_operation: The ideal operation (as a QPROGRAM) to represent.</span>
@@ -249,7 +253,7 @@ in the top right corner -->
 <span class="sd">        This representation is based on the ideal assumption that one</span>
 <span class="sd">        can append Pauli gates to a noisy operation without introducing</span>
 <span class="sd">        additional noise. For a backend which violates this assumption,</span>
-<span class="sd">        it remains a good approximation for small values of ``noise_level``.</span>
+<span class="sd">        it remains a good approximation for small values of ``epsilon``.</span>
 
 <span class="sd">    .. note::</span>
 <span class="sd">        The input ``ideal_operation`` is typically a QPROGRAM with a single</span>
