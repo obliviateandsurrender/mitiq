@@ -277,6 +277,28 @@ in the top right corner -->
   </ul>
  </li>
  <li class="toc-h2 nav-item toc-entry">
+  <a class="reference internal nav-link" href="#digital-dynamical-decoupling">
+   Digital Dynamical Decoupling
+  </a>
+  <ul class="nav section-nav flex-column">
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#module-mitiq.ddd.ddd">
+     Digital Dynamical Decoupling (High-Level Tools)
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#module-mitiq.ddd.insertion">
+     Insertion
+    </a>
+   </li>
+   <li class="toc-h3 nav-item toc-entry">
+    <a class="reference internal nav-link" href="#module-mitiq.ddd.rules.rules">
+     Rules
+    </a>
+   </li>
+  </ul>
+ </li>
+ <li class="toc-h2 nav-item toc-entry">
   <a class="reference internal nav-link" href="#module-mitiq.executor.executor">
    Executors
   </a>
@@ -1214,6 +1236,182 @@ the statistical estimate of the expectation value of the observable.</p>
 </dd>
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>A Qiskit depolarizing NoiseModel.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+</div>
+<div class="section" id="digital-dynamical-decoupling">
+<h2>Digital Dynamical Decoupling<a class="headerlink" href="#digital-dynamical-decoupling" title="Permalink to this headline">#</a></h2>
+<div class="section" id="module-mitiq.ddd.ddd">
+<span id="digital-dynamical-decoupling-high-level-tools"></span><h3>Digital Dynamical Decoupling (High-Level Tools)<a class="headerlink" href="#module-mitiq.ddd.ddd" title="Permalink to this headline">#</a></h3>
+<p>High-level digital dynamical decoupling (DDD) tools.</p>
+</div>
+<div class="section" id="module-mitiq.ddd.insertion">
+<span id="insertion"></span><h3>Insertion<a class="headerlink" href="#module-mitiq.ddd.insertion" title="Permalink to this headline">#</a></h3>
+<p>Tools to determine slack windows in circuits and to insert DDD sequences.</p>
+<dl class="py function">
+<dt id="mitiq.ddd.insertion.get_slack_matrix_from_circuit_mask">
+<code class="sig-prename descclassname"><span class="pre">mitiq.ddd.insertion.</span></code><code class="sig-name descname"><span class="pre">get_slack_matrix_from_circuit_mask</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">mask</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mitiq/ddd/insertion.html#get_slack_matrix_from_circuit_mask"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mitiq.ddd.insertion.get_slack_matrix_from_circuit_mask" title="Permalink to this definition">#</a></dt>
+<dd><p>Given a circuit mask matrix <span class="math notranslate nohighlight">\(A\)</span>, e.g., the output of
+<code class="docutils literal notranslate"><span class="pre">_get_circuit_mask()</span></code>, returns a slack matrix <span class="math notranslate nohighlight">\(B\)</span>,
+where <span class="math notranslate nohighlight">\(B_{i,j} = t\)</span> if the position <span class="math notranslate nohighlight">\(A_{i,j}\)</span> is the
+initial element of a sequence of <span class="math notranslate nohighlight">\(t\)</span> zeros (from left to right).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>mask</strong> (<a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a>) – The mask matrix of a quantum circuit.</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><a class="reference external" href="https://numpy.org/doc/stable/reference/generated/numpy.ndarray.html#numpy.ndarray" title="(in NumPy v1.22)"><code class="xref py py-class docutils literal notranslate"><span class="pre">ndarray</span></code></a></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The matrix of slack lengths.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</div>
+<div class="section" id="module-mitiq.ddd.rules.rules">
+<span id="rules"></span><h3>Rules<a class="headerlink" href="#module-mitiq.ddd.rules.rules" title="Permalink to this headline">#</a></h3>
+<p>Built-in rules determining what DDD sequence should be applied in a given
+slack window.</p>
+<dl class="py function">
+<dt id="mitiq.ddd.rules.rules.general_rule">
+<code class="sig-prename descclassname"><span class="pre">mitiq.ddd.rules.rules.</span></code><code class="sig-name descname"><span class="pre">general_rule</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slack_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gates</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mitiq/ddd/rules/rules.html#general_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mitiq.ddd.rules.rules.general_rule" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a digital dynamical decoupling sequence, based on inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slack_length</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Length of idle window to fill.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – How many identity spacing gates to apply between dynamical
+decoupling gates, as a non-negative int. Negative int corresponds
+to default. Defaults to maximal spacing that fits a single sequence
+in the given slack window.
+E.g. given slack_length = 8, gates = [X, X] the spacing defaults
+to 2 and the rule returns the sequence:
+──I──I──X──I──I──X──I──I──
+given slack_length = 9, gates [X, Y, X, Y] the spacing defaults
+to 1 and the rule returns the sequence:
+──I──X──I──Y──I──X──I──Y──I──.</p></li>
+<li><p><strong>gates</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Gate</span></code>]) – A list of single qubit Cirq gates to build the rule. E.g. [X, X]
+is the xx sequence, [X, Y, X, Y] is the xyxy sequence.
+- Note: To repeat the sequence, specify a repeated gateset.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A digital dynamical decoupling sequence, as a Cirq circuit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mitiq.ddd.rules.rules.repeated_rule">
+<code class="sig-prename descclassname"><span class="pre">mitiq.ddd.rules.rules.</span></code><code class="sig-name descname"><span class="pre">repeated_rule</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slack_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">gates</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mitiq/ddd/rules/rules.html#repeated_rule"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mitiq.ddd.rules.rules.repeated_rule" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a general digital dynamical decoupling sequence that repeats
+until the slack is filled without spacing, up to a complete repetition.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slack_length</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Length of idle window to fill.</p></li>
+<li><p><strong>gates</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Gate</span></code>]) – A list of single qubit Cirq gates to build the rule. E.g. [X, X]
+is the xx sequence, [X, Y, X, Y] is the xyxy sequence.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A repeated digital dynamical decoupling sequence, as a Cirq circuit.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Where <a class="reference internal" href="#mitiq.ddd.rules.rules.general_rule" title="mitiq.ddd.rules.rules.general_rule"><code class="xref py py-func docutils literal notranslate"><span class="pre">general_rule()</span></code></a> fills a slack window with a single
+sequence, this rule attempts to fill every moment with sequence
+repetitions (up to a complete repetition of the gate set).
+E.g. given slack_length = 8 and gates = [X, Y, X, Y], this rule returns
+the sequence: ──X──Y──X──Y──X──Y──X──Y──.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mitiq.ddd.rules.rules.xx">
+<code class="sig-prename descclassname"><span class="pre">mitiq.ddd.rules.rules.</span></code><code class="sig-name descname"><span class="pre">xx</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slack_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mitiq/ddd/rules/rules.html#xx"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mitiq.ddd.rules.rules.xx" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an XX digital dynamical decoupling sequence, based on inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slack_length</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Length of idle window to fill.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – How many identity spacing gates to apply between dynamical
+decoupling gates, as a non-negative int. Negative int corresponds
+to default. Defaults to maximal spacing that fits a single sequence
+in the given slack window.
+E.g. given slack_length = 8 the spacing defaults to 2 and this
+rule returns the sequence:
+──I──I──X──I──I──X──I──I──.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An XX digital dynamical decoupling sequence, as a Cirq circuit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mitiq.ddd.rules.rules.xyxy">
+<code class="sig-prename descclassname"><span class="pre">mitiq.ddd.rules.rules.</span></code><code class="sig-name descname"><span class="pre">xyxy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slack_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mitiq/ddd/rules/rules.html#xyxy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mitiq.ddd.rules.rules.xyxy" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns an XYXY digital dynamical decoupling sequence, based on inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slack_length</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Length of idle window to fill.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – How many identity spacing gates to apply between dynamical
+decoupling gates, as a non-negative int. Negative int corresponds
+to default. Defaults to maximal spacing that fits a single sequence
+in the given slack window.
+E.g. given slack_length = 9 the spacing defaults to 1 and this
+rule returns the sequence:
+──I──X──I──Y──I──X──I──Y──I──.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An XYXY digital dynamical decoupling sequence, as a Cirq circuit.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt id="mitiq.ddd.rules.rules.yy">
+<code class="sig-prename descclassname"><span class="pre">mitiq.ddd.rules.rules.</span></code><code class="sig-name descname"><span class="pre">yy</span></code><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">slack_length</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">spacing</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">-</span> <span class="pre">1</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/mitiq/ddd/rules/rules.html#yy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#mitiq.ddd.rules.rules.yy" title="Permalink to this definition">#</a></dt>
+<dd><p>Returns a YY digital dynamical decoupling sequence, based on inputs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>slack_length</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – Length of idle window to fill.</p></li>
+<li><p><strong>spacing</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/functions.html#int" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">int</span></code></a>) – How many identity spacing gates to apply between dynamical
+decoupling gates, as a non-negative int. Negative int corresponds
+to default. Defaults to maximal spacing that fits a single sequence
+in the given slack window.
+E.g. given slack_length = 8 the spacing defaults to 2 and
+this rule returns the sequence:
+──I──I──Y──I──I──Y──I──I──.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">Circuit</span></code></p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>An YY digital dynamical decoupling sequence, as a Cirq circuit.</p>
 </dd>
 </dl>
 </dd></dl>

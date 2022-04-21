@@ -289,7 +289,7 @@ Optional Dependencies
 ---------------------
 PyQuil Version:	3.0.1
 Qiskit Version:	0.36.0
-Braket Version:	1.17.0
+Braket Version:	1.19.0
 
 Python Version:	3.8.12
 Platform Info:	Linux (x86_64)
@@ -386,7 +386,7 @@ Platform Info:	Linux (x86_64)
 0: ───X─── = 1.010*(0: ───X───)-0.003*(0: ───X───X───)-0.003*(0: ───X───Y───)-0.003*(0: ───X───Z───)
 </pre></div>
 </div>
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PEC value: 1.236073275380539
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>PEC value: 1.5134185050014999
 </pre></div>
 </div>
 </div>
@@ -487,7 +487,7 @@ Platform Info:	Linux (x86_64)
 0: ───X^0.6───Z^0.8───
 
 Scaled circuit:
-0: ───X^0.618───Z^0.775───
+0: ───X^0.544───Z^(8/9)───
 </pre></div>
 </div>
 </div>
@@ -667,13 +667,13 @@ Scaled circuit:
         cirq.X(cirq.LineQubit(0)),
     ),
     cirq.Moment(
+        cirq.X(cirq.LineQubit(0)),
+    ),
+    cirq.Moment(
+        cirq.X(cirq.LineQubit(0)),
+    ),
+    cirq.Moment(
         cirq.Z(cirq.LineQubit(0)),
-    ),
-    cirq.Moment(
-        cirq.X(cirq.LineQubit(0)),
-    ),
-    cirq.Moment(
-        cirq.X(cirq.LineQubit(0)),
     ),
 ])]
 </pre></div>
@@ -740,7 +740,7 @@ Scaled circuit:
 </div>
 </div>
 <div class="cell_output docutils container">
-<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ZNE then PEC value: -0.40000005390780136
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>ZNE then PEC value: -0.2000000280176148
 </pre></div>
 </div>
 </div>
@@ -799,7 +799,7 @@ c0: 2/═══════════╩══╩═
                  0  1 
 </pre></div>
 </div>
-<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.48828125
+<div class="output text_plain highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>0.4794921875
 </pre></div>
 </div>
 </div>
