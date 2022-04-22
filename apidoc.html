@@ -1288,12 +1288,12 @@ slack window.</p>
 decoupling gates, as a non-negative int. Negative int corresponds
 to default. Defaults to maximal spacing that fits a single sequence
 in the given slack window.
-E.g. given slack_length = 8, gates = [X, X] the spacing defaults
-to 2 and the rule returns the sequence:
-──I──I──X──I──I──X──I──I──
-given slack_length = 9, gates [X, Y, X, Y] the spacing defaults
-to 1 and the rule returns the sequence:
-──I──X──I──Y──I──X──I──Y──I──.</p></li>
+E.g. given slack_length = 20, gates = [X, X] the spacing defaults
+to 6 and the rule returns the sequence:
+──I──I──I──I──I──I──X──I──I──I──I──I──I──X──I──I──I──I──I──I──
+given slack_length = 20, gates [X, Y, X, Y] the spacing defaults
+to 3 and the rule returns the sequence:
+──I──I──I──I──X──I──I──I──Y──I──I──I──X──I──I──I──Y──I──I──I──</p></li>
 <li><p><strong>gates</strong> (<a class="reference external" href="https://docs.python.org/3.7/library/typing.html#typing.List" title="(in Python v3.7)"><code class="xref py py-class docutils literal notranslate"><span class="pre">List</span></code></a>[<code class="xref py py-class docutils literal notranslate"><span class="pre">Gate</span></code>]) – A list of single qubit Cirq gates to build the rule. E.g. [X, X]
 is the xx sequence, [X, Y, X, Y] is the xyxy sequence.
 - Note: To repeat the sequence, specify a repeated gateset.</p></li>
@@ -1333,8 +1333,8 @@ is the xx sequence, [X, Y, X, Y] is the xyxy sequence.</p></li>
 <p>Where <a class="reference internal" href="#mitiq.ddd.rules.rules.general_rule" title="mitiq.ddd.rules.rules.general_rule"><code class="xref py py-func docutils literal notranslate"><span class="pre">general_rule()</span></code></a> fills a slack window with a single
 sequence, this rule attempts to fill every moment with sequence
 repetitions (up to a complete repetition of the gate set).
-E.g. given slack_length = 8 and gates = [X, Y, X, Y], this rule returns
-the sequence: ──X──Y──X──Y──X──Y──X──Y──.</p>
+E.g. given slack_length = 17 and gates = [X, Y], this rule returns
+the sequence: ──I──X──Y──X──Y──X──Y──X──Y──X──Y──X──Y──X──Y──X──Y──</p>
 </div>
 </dd></dl>
 
@@ -1350,9 +1350,9 @@ the sequence: ──X──Y──X──Y──X──Y──X──Y──.</p
 decoupling gates, as a non-negative int. Negative int corresponds
 to default. Defaults to maximal spacing that fits a single sequence
 in the given slack window.
-E.g. given slack_length = 8 the spacing defaults to 2 and this
+E.g. given slack_length = 20 the spacing defaults to 6 and this
 rule returns the sequence:
-──I──I──X──I──I──X──I──I──.</p></li>
+──I──I──I──I──I──I──X──I──I──I──I──I──I──X──I──I──I──I──I──I──</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1376,9 +1376,9 @@ rule returns the sequence:
 decoupling gates, as a non-negative int. Negative int corresponds
 to default. Defaults to maximal spacing that fits a single sequence
 in the given slack window.
-E.g. given slack_length = 9 the spacing defaults to 1 and this
+E.g. given slack_length = 20 the spacing defaults to 3 and this
 rule returns the sequence:
-──I──X──I──Y──I──X──I──Y──I──.</p></li>
+──I──I──I──I──X──I──I──I──Y──I──I──I──X──I──I──I──Y──I──I──I──</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
@@ -1402,9 +1402,9 @@ rule returns the sequence:
 decoupling gates, as a non-negative int. Negative int corresponds
 to default. Defaults to maximal spacing that fits a single sequence
 in the given slack window.
-E.g. given slack_length = 8 the spacing defaults to 2 and
+E.g. given slack_length = 20 the spacing defaults to 6 and
 this rule returns the sequence:
-──I──I──Y──I──I──Y──I──I──.</p></li>
+──I──I──I──I──I──I──Y──I──I──I──I──I──I──Y──I──I──I──I──I──I──</p></li>
 </ul>
 </dd>
 <dt class="field-even">Return type</dt>
